@@ -22,7 +22,7 @@
 
                         <li class="myyiguo">
                             <!--根据session 处理  -->
-                            <div class="tit"><a rel="nofollow" href="#" target="_blank"><i></i>我的易果<s></s></a>
+                            <div class="tit"><a rel="nofollow" href="#" ><i></i>我的易果<s></s></a>
                             </div>
                             <div class="con">
                             <#--<li id="_loginname" ><a rel="nofollow" href="#">${username}</a></li>-->

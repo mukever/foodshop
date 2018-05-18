@@ -36,14 +36,13 @@
                                     <li><span>订单编号：${orderDto.oid}</span><span>应付金额：<b class="price">￥ ${(orderDto.oamount)!"0.00"}</b></span></li>
                                     <li><span>送 货 至：${orderDto.bname}   ${orderDto.baddress}  </span></li>
                                 </ul>
-                                <a class="btn-org j_paybtn" href="javascript:void(0)">立即支付<span id="timing">4</span></a>
+                                <#--<a class="btn-org j_paybtn">立即支付<span id="timing">4</span></a>-->
+                                <a class="btn-org j_paybtn" id="paybtn">立即支付</a>
                                 <span class="fs12 mt10">倒计时结束时自动打开支付页面，如果未跳转，请点击按钮。</span>
                             </dd>
                             <input type="hidden" name="OrderPaymentNum" class="j_payonlineNum" value="30" />
-                            <input type="hidden" name="SerialNumber" class="j_serialNumber" value="78285833" />
-                            <input type="hidden" name="TotalPrice" class="j_totalPrice" value="69.00" />
-                            <input type="hidden" name="OrderCode" class="j_orderCode" value="EFRUIT1710782858333805" />
-                            <input type="hidden" name="OrderId" class="j_payonlineId" value="6fd28b7a-6b82-4c85-bdec-1c8625cd9bd3" />
+                            <input type="hidden" name="SerialNumber" id="SerialNumber" value="${orderDto.oid}" />
+                            <input type="hidden" name="TotalPrice" class="j_totalPrice" value="${(orderDto.oamount)!"0.00"}" />
 
                         </dl>
                     </div>
@@ -60,9 +59,51 @@
 </div>
 <script src="http://static01.yiguo.com/control/jquery-1.7.2-min.js"></script>
 <script src="http://static01.yiguo.com/common/util.js"></script>
-<script src="http://static01.yiguo.com/cart/js/orderrush.js"></script>
-<script src="http://static01.yiguo.com/common/topdsp.js"></script>
+<#--<script src="http://static01.yiguo.com/cart/js/orderrush.js"></script>-->
 
 <script src="http://static01.yiguo.com/common/o_code.js?v20160908"></script>
 </body>
+
+<script type="text/javascript">
+
+
+   $("#paybtn").click(function () {
+
+       console.log("点击支付");
+
+
+       var oid = $("#SerialNumber").val()
+
+       console.log(oid);
+
+
+       //请求后台数据库 查询用户是否已经注册
+       $.ajax({
+           url:"http://localhost:8080/foodshop/api/pay",
+           type: 'POST',
+           async: false,
+           data: {"oid":oid},
+           timeout: 3000,
+           dataType: 'json',
+           success: function(data){
+               console.log(data['code']);
+               console.log("支付成功");
+               if(data['code']=='901'){
+                   self.location = "myorder";
+               }else {
+
+                   self.location = "login";
+               }
+           },
+           error:function () {
+               alert("错误")
+           }
+       })
+
+   })
+
+
+
+
+</script>
 </html>

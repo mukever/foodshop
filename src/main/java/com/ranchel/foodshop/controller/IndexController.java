@@ -9,6 +9,8 @@ import com.ranchel.foodshop.service.CategoryService;
 import com.ranchel.foodshop.service.FoodService;
 import com.ranchel.foodshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,20 +52,15 @@ public class IndexController {
 
         }
         List<FoodInfo> foodInfos = foodService.findUpAll();
-        FoodInfo firstOne = new FoodInfo();
-        if(!foodInfos.isEmpty()){
-            firstOne = foodInfos.get(0);
-        }
 
         List<FoodInfo> hotFoods = new ArrayList<>();
 
-        for(int i=1;i<(foodInfos.size()>9?9:foodInfos.size());i++){
+        for(int i=0;i<(foodInfos.size()>10?10:foodInfos.size());i++){
             hotFoods.add(foodInfos.get(i));
         }
 
         map.put("catagoryBeanList",catagoryBeanList);
         map.put("hotfoods",hotFoods);
-        map.put("firstOne",firstOne);
         return new ModelAndView("buyer/index",map);
     }
 
@@ -166,32 +163,88 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/myorder")
-    public ModelAndView BuyerMyorder( Map<String, Object>  map) {
+    @RequestMapping("/mycartdelete")
+    public ModelAndView BuyerMycartDelete(
+            @RequestParam(value = "fid",required=false) String fid,
+            HttpSession session, Map<String, Object>  map) {
 
-        List<FoodCategory> foodCategoryList = categoryService.findAll();
-        List<CatagoryBean> catagoryBeanList = new ArrayList<>();
+        if(session.getAttribute("username")==null){
+            return new ModelAndView("buyer/login");
+        }else {
 
-        for (FoodCategory f:foodCategoryList) {
+            if(session.getAttribute("cart")==null){
+                Map<FoodInfo,Integer> cartfoods = new HashMap<>();
 
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
-            CatagoryBean catagoryBean = new CatagoryBean();
-            catagoryBean.setCname(f.getCname());
-            catagoryBean.setCtype(f.getCtype());
-            catagoryBean.setFoodInfos(foodInfos);
-            catagoryBeanList.add(catagoryBean);
+                CartBean cartBean = new CartBean();
+                cartBean.setAll_number(0);
+                cartBean.setCartfoods(cartfoods);
+                cartBean.setTotalprice(0.0);
+
+                map.put("cart",cartBean);
+
+            }else {
+                CartBean cartBean = (CartBean) session.getAttribute("cart");
+
+                Map<FoodInfo,Integer> foodmap = cartBean.getCartfoods();
+
+                Set<FoodInfo> foodInfoSet = foodmap.keySet();
+
+                for(FoodInfo f:foodInfoSet){
+                    if(f.getFid().equals(fid)){
+                        cartBean.setTotalprice(cartBean.getTotalprice() - f.getFprice().doubleValue()*foodmap.get(f));
+                        cartBean.setAll_number(cartBean.getAll_number()-1);
+                        foodmap.remove(f);
+
+                    }
+                }
+                cartBean.setCartfoods(foodmap);
+                map.put("cart",cartBean);
+                System.out.println(cartBean);
+            }
+
+            return new ModelAndView("buyer/mycart",map);
         }
 
-        System.out.println(catagoryBeanList.size());
-        map.put("catagoryBeanList",catagoryBeanList);
+    }
 
 
-        map.put("allcatagory",foodCategoryList);
+    @RequestMapping("/myorder")
+    public ModelAndView BuyerMyorder(HttpSession session,
+                                     @RequestParam(value = "page",defaultValue = "1") Integer page,
+                                     @RequestParam(value = "size",defaultValue ="10") Integer size,
+                                     Map<String, Object>  map) {
+        if(session.getAttribute("username")==null){
+            return new ModelAndView("buyer/login");
+        }else {
+            String username = (String) session.getAttribute("username");
+            List<FoodCategory> foodCategoryList = categoryService.findAll();
+            List<CatagoryBean> catagoryBeanList = new ArrayList<>();
+
+            for (FoodCategory f:foodCategoryList) {
+
+                List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
+                if(foodInfos.size()==0) continue;
+                CatagoryBean catagoryBean = new CatagoryBean();
+                catagoryBean.setCname(f.getCname());
+                catagoryBean.setCtype(f.getCtype());
+                catagoryBean.setFoodInfos(foodInfos);
+                catagoryBeanList.add(catagoryBean);
+            }
+
+            System.out.println(catagoryBeanList.size());
+            map.put("catagoryBeanList",catagoryBeanList);
+
+            map.put("allcatagory",foodCategoryList);
+            PageRequest request=new PageRequest(page-1,size);
+            Page<OrderDto> orderDtoPage=orderService.findList(username,request);
+            map.put("orderDtoPage",orderDtoPage);
+            map.put("currentPage",page);
+            map.put("size",size);
+
+            return new ModelAndView("buyer/myorderlist",map);
+        }
 
 
-
-        return new ModelAndView("buyer/myorder",map);
     }
 
     @RequestMapping("/order")
@@ -227,6 +280,16 @@ public class IndexController {
     public ModelAndView BuyerPay(@RequestParam(value = "oid",required=false) String oid,
                                  Map<String, Object>  map) {
 
+
+        OrderDto orderDto = orderService.findOne(oid);
+        map.put("orderDto",orderDto);
+
+        return new ModelAndView("buyer/pay",map);
+    }
+
+    @RequestMapping("/alipay")
+    public ModelAndView BuyerAliPay(@RequestParam(value = "oid",required=false) String oid,
+                                 Map<String, Object>  map) {
 
         OrderDto orderDto = orderService.findOne(oid);
         map.put("orderDto",orderDto);

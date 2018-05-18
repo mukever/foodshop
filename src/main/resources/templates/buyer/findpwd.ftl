@@ -125,8 +125,8 @@
 <form action="FindPwd.html" method="post">    <div class="header clearfix">
         <div class="wrap">
             <div class="logo">
-                <a href="http://www.yiguo.com" target="_blank"></a>
-                <a href="#body" target="_blank" class="l2 goTop"></a>
+                <a href="http://www.yiguo.com" ></a>
+                <a href="#body"  class="l2 goTop"></a>
                 <span class="h-tit">账号安全验证</span>
             </div>
         </div>
@@ -217,7 +217,7 @@
                     <p>沪ICP备09008015号 Copyright © 2005-2018 <a href="http://www.yiguo.com/">上海易果电子商务有限公司</a>版权所有</p>
                     <p class="authentication">
                          <a href="http://www.yiguo.com/legal" target="_blank" rel="nofollow"><img src="http://img07.yiguoimg.com/d/web/171208/00652/173249/153685368061665897_121x29.png"></a>
-                        <a href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20110512114405424" target="_blank"><img src="http://img03.yiguo.com/images/footer_copy.gif" width="47px" height="47px"></a>
+                        <a href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20110512114405424"><img src="http://img03.yiguo.com/images/footer_copy.gif" width="47px" height="47px"></a>
                         <a href="https://180.169.127.46:9090/?sn=310100102001">
                             <img src="http://img02.yiguo.com/e/web/150623/00841/170532/picp_bg.png" alt="»¦¹«θ±¸" border="0">
                             <span>310100102001</span>

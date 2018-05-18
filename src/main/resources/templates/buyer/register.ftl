@@ -25,7 +25,7 @@
 <div class="header clearfix">
     <div class="wrap">
         <div class="logo">
-            <a href="index" target="_blank"></a>
+            <a href="index" ></a>
             <span class="h-tit">注册</span>
         </div>
     </div>

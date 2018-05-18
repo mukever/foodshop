@@ -6,6 +6,7 @@ import com.ranchel.foodshop.exception.ShopException;
 import com.ranchel.foodshop.form.FoodForm;
 import com.ranchel.foodshop.service.CategoryService;
 import com.ranchel.foodshop.service.FoodService;
+import com.ranchel.foodshop.utils.FileUtil;
 import com.ranchel.foodshop.utils.KeyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +36,9 @@ public class SellerFoodController {
     private FoodService foodService;
     @Autowired
     private CategoryService categoryService;
+
+    public static final String ROOT = "/Users/diamond/IdeaProjects/foodshop/src/main/resources/static/images/foods/";
+    public static final String IMAGEROOT = "/foodshop/images/foods/";
 
     @GetMapping("/list")
     //列表，参数：page,size,map
@@ -99,12 +106,15 @@ public class SellerFoodController {
      * 保存/更新
      * @param foodForm
      * @param bindingResult
+     * @param file
      * @param map
      * @return
      */
    @PostMapping("/save")
     public ModelAndView save(@Valid FoodForm foodForm,
                              BindingResult bindingResult,
+                             @RequestParam("file") MultipartFile file,
+                             HttpServletRequest request,
                              Map<String, Object> map ){
        if(bindingResult.hasErrors()){
            map.put("msg", bindingResult.getFieldError().getDefaultMessage());
@@ -112,6 +122,15 @@ public class SellerFoodController {
            return new ModelAndView("common/error", map);
        }
        FoodInfo foodInfo=new FoodInfo();
+
+       String fileName = file.getOriginalFilename();
+       String filePath = ROOT;
+       System.out.println(filePath);
+       try {
+           FileUtil.uploadFile(file.getBytes(), filePath, fileName);
+       } catch (Exception e) {
+           // TODO: handle exception
+       }
        try{
            //如果fid为空，说明是新增的
            if(!StringUtils.isEmpty(foodForm.getFid())){
@@ -121,6 +140,8 @@ public class SellerFoodController {
                foodForm.setFid(KeyUtil. uKey());
            }
            BeanUtils.copyProperties(foodForm,foodInfo);
+           foodInfo.setFimage(IMAGEROOT+fileName);
+           System.out.println(IMAGEROOT+fileName);
            foodService.save(foodInfo);
        }catch (ShopException e){
            map.put("msg", e.getMessage());

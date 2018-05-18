@@ -17,7 +17,7 @@
                         <tr>
                             <th>商品id</th>
                             <th>名称</th>
-                            <#--<th>图片</th>-->
+                            <th>图片</th>
                             <th>单价</th>
                             <th>描述</th>
                             <th>类目</th>
@@ -32,7 +32,12 @@
                         <tr>
                             <td>${foodInfo.fid}</td>
                             <td>${foodInfo.fname}</td>
-                            <#--<td><img height="100" width="100" src="${foodInfo.fimage}" alt=""></td>-->
+                            <#if (foodInfo.fimage)??>
+                                <td><img height="100" width="100" src="${(foodInfo.fimage)!""}" alt=""></td>
+                            <#else>
+                                <td></td>
+                            </#if>
+
                             <td>${foodInfo.fprice}</td>
                             <td>${foodInfo.fdescription}</td>
                             <td>${foodInfo.ctype}</td>
@@ -72,7 +77,7 @@
                     <#if currentPage gte foodInfoPage.getTotalPages()>
                         <li class="disabled"><a href="#">下一页</a></li>
                     <#else>
-                        <li><a href="/foodshop/seller/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
+                        <li><a href="/foodshop/seller/food/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
                     </#if>
                     </ul>
                 </div>

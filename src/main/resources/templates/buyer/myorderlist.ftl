@@ -70,7 +70,7 @@
 
                         <li class="myyiguo">
                             <!--根据session 处理  -->
-                            <div class="tit"><a rel="nofollow" href="#" target="_blank"><i></i>我的易果<s></s></a>
+                            <div class="tit"><a rel="nofollow" href="#"><i></i>我的易果<s></s></a>
                             </div>
                             <div class="con">
                             <#--<li id="_loginname" ><a rel="nofollow" href="#">${username}</a></li>-->
@@ -97,27 +97,7 @@
             <div class="logo">
                 <a href="http://www.yiguo.com"></a>
             </div>
-            <!--搜索 开始-->
-            <div class="search" style="position:relative;">
-                <div class="search-bar clearfix">
-                    <input type="text" id="keyword" name="keyword" class="search-input" value="输入商品名／编号／拼音" onfocus=" if (this.value == '输入商品名／编号／拼音') {this.value = '';this.style.color = '#000';} " onblur=" if (this.value == '') {this.value = '输入商品名／编号／拼音';this.style.color = '#999';} " style="color: rgb(153, 153, 153);">
-                    <input class="search-btn" type="submit" value="搜索">
-                </div>
-                <ul class="hide" id="shelper" style="display: none;"></ul>
-                <div class="search-keywords" id="keywords">
-                    <script id="keywordstpl" type="text/x-handlebars-template">
-                        {{#KeyWords}}
-                        {{#equal IsImportant true}}
-                        <a href="{{Link}}" class="hot" target="_blank">{{Text}}</a>
-                        {{else}}
-                        <a href="{{Link}}" target="_blank">{{Text}}</a>
-                        {{/equal}}
-                        {{/KeyWords}}
-                    </script>
-                </div>
-            </div>
             <!--购物车 开始-->
-
 
             <div class="shopping-cart">
                 <dl>
@@ -165,7 +145,7 @@
                 </div>
                 <div>
                     <div class="ad" style="height: 308px;">
-                        <a href="#" target="_blank" style="display: none"><img src="http://static01.yiguo.com/utaste/images/ad.jpg" width="194" height="308"></a>
+                        <a href="#"  style="display: none"><img src="http://static01.yiguo.com/utaste/images/ad.jpg" width="194" height="308"></a>
                     </div>
                 </div>
             </div>
@@ -192,65 +172,47 @@
                 <div class="paging j_active" id="j_pages">
                 </div>
                 <!--页码 结束-->
-
+                    <#list orderDtoPage.content as orderDto>
                     <li>
                         <table class="order-list j_product">
                             <thead>
                             <tr>
-                                <th colspan="4"><div><span>订单号：{{SerialNumber}}</span><span>提交时间：{{RecCreateTime}}</span></div></th>
+                                <th colspan="4"><div><span>订单号：${orderDto.oid}</span><span>提交时间：${orderDto.ocreatetime}</span></div></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td width="520" class="all-goods">
 
-                                    <a href="{{CommodityUrl}}" target="_blank"><img class="j_product_img" src="{{CommodityImgUrl}}"></a>
+                                    <div class="m">
 
-                                    <div class="m"><div>共计{{CommodityCount}}件商品</div></div>
+                                        收货人姓名：${orderDto.bname}
+                                        <br/>
+                                        收货人手机号：${orderDto.bphone}
+                                        <br/>
+                                        收货地址：${orderDto.baddress}
+                                        <br/>
+
+                                    <div>
+
+
                                 </td>
-                                <td class="amount" width="140">￥{{TotalPrice}}</td>
-                                <td width="140">{{OrderStateDesc}}</td>
+                                <td class="amount" width="140">${orderDto.oamount}</td>
+                                <td width="140">
+
+                                    ${orderDto.getOrderStatusEnum().message}
+
+                                </td>
                                 <td width="140" class="operate">
-
-                                    <div>
-                                        <a class="btn-org" href="http://trade.yiguo.com/Rush/{{OrderId}}">立即支付</a>
-                                    </div>
-
-                                    <div>
-                                        <a href="javascript:void(0)" class="cancel" data-oid="{{OrderId}}">取消订单</a>
-                                    </div>
-
-                                    <div>
-                                        <a target="_blank" href="../Trade/OrderDetail?orderId={{OrderId}}">查看详情</a>
-                                    </div>
-
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td width="520" class="all-goods">
-
-                                    <a href="{{CommodityUrl}}" target="_blank"><img class="j_product_img" src="{{CommodityImgUrl}}"></a>
-
-                                    <div class="m"><div>共计{{CommodityCount}}件商品</div></div>
-                                </td>
-                                <td class="amount" width="140">￥{{TotalPrice}}</td>
-                                <td width="140">{{OrderStateDesc}}</td>
-                                <td width="140" class="operate">
-
-                                    <div>
-                                        <a class="btn-org" href="http://trade.yiguo.com/Rush/{{OrderId}}">立即支付</a>
-                                    </div>
-
-                                    <div>
-                                        <a href="javascript:void(0)" class="cancel" data-oid="{{OrderId}}">取消订单</a>
-                                    </div>
-
-                                    <div>
-                                        <a target="_blank" href="../Trade/OrderDetail?orderId={{OrderId}}">查看详情</a>
-                                    </div>
-
+                                    <#if orderDto.getOrderPayStatus().code == 0>
+                                        <div>
+                                            <a class="btn-org" href="pay?oid=${orderDto.oid}">立即支付</a>
+                                        </div>
+                                        <#else>
+                                                <div>
+                                                    支付完成
+                                                </div>
+                                    </#if>
 
                                 </td>
                             </tr>
@@ -258,7 +220,7 @@
                             </tbody>
                         </table>
                     </li>
-
+                    </#list>
             </div>
 
             <!--选择取消原因弹框-->

@@ -42,7 +42,7 @@
 
                         <li class="myyiguo">
                             <!--根据session 处理  -->
-                            <div class="tit"><a rel="nofollow" href="#" target="_blank"><i></i>我的易果<s></s></a>
+                            <div class="tit"><a rel="nofollow" href="#"><i></i>我的易果<s></s></a>
                             </div>
                             <div class="con">
                             <#--<li id="_loginname" ><a rel="nofollow" href="#">${username}</a></li>-->
@@ -132,7 +132,7 @@
                                 <tr>
                                     <#assign oneprice=foodkey.fprice>
                                     <#assign number=item[foodkey_index]>
-                                    <td class="cart-t-img"><a href="http://www.yiguo.com/product/1103753.html"><img src="${(foodkey.fimage)!""}"></a></td>
+                                    <td class="cart-t-img"><a href="fooddetail?fid=${foodkey.fid}"><img src="${(foodkey.fimage)!""}"></a></td>
                                     <td class="cart-t-info"><a href="fooddetail?fid=${foodkey.fid}">${foodkey.fname}</a></td>
                                     <td class="cart-t-ub" style="width:75px;"></td>
                                     <td class="cart-t-price">￥${foodkey.fprice}</td>
@@ -141,7 +141,7 @@
 
                                     <td class="cart-t-total">￥<span>${oneprice*number}</span></td>
                                     <td class="cart-t-opera">
-                                        <a href="" onclick="">删除</a>
+                                        <a href="mycartdelete?fid=${foodkey.fid}">删除</a>
                                     </td>
                                 </tr>
                             </#list>

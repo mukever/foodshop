@@ -25,7 +25,11 @@ public enum ApiCodeEnum{
 
     ADDTOCARTSUCCESS(701,"添加购物车成功"),
 
-    COUNTSUCCESS(801,"提价订单成功");
+    COUNTSUCCESS(801,"提价订单成功"),
+
+    PAYSUCCESS(901,"支付成功"),
+    PAYFAIL(902,"支付失败"),
+    PAYERROR(903,"支付出错");
 
     private Integer code;
     private String message;

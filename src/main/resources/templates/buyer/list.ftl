@@ -57,13 +57,13 @@
             <#list foodInfos as foodInfo>
                     <li class="product_item j_product" _type="0" _productid="${foodInfo.fid}">
                         <div class="p_img clearfix">
-                            <a href="fooddetail?fid=${foodInfo.fid}" target="_blank">
+                            <a href="fooddetail?fid=${foodInfo.fid}">
                                     <img src="${(foodInfo.fimage)!""}" width="290" height="290" class="j_product_img">
 
                             </a>
                         </div>
                         <div class="p_info clearfix">
-                            <div class="p_name"><a href="#" target="_blank">${foodInfo.fname}</a></div>
+                            <div class="p_name"><a href="#">${foodInfo.fname}</a></div>
                             <div class="p_price">
                                 <span class="price">
                                     <strong>${foodInfo.fprice}</strong>

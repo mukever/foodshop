@@ -24,8 +24,8 @@
 
     <div class="banner-slider">
         <ul class="b-slider">
-                    <li style="background:#efefef;"  _title="517吃货节">
-                        <a href="http://www.yiguo.com/activity/sale/517chjhuabei" target="_blank">
+                    <li style="background:#efefef;" >
+                        <a href="index" >
                             <div class="slider-wrap">
                                 <span class="banner-text">
                                     <img height="500" />
@@ -65,24 +65,25 @@
     </span>
         </div>
         <div class="floor-con floor-layout2">
-            <div class="floor-side">
-                <!--firstOne info-->
-                <a href="#" target="_blank">
-                    <img src="http://img07.yiguoimg.com/d/others/180313/9288720240780397.jpg" width="275" height="463">
-                </a>
-            </div>
-            <div class="floor-main">
+            <#--<div class="floor-side">-->
+                <#--<!--firstOne info&ndash;&gt;-->
+                <#--<a href="fooddetail?fid=${firstOne.fid}">-->
+                    <#--<img src="${(firstOne.fimage)!""}"-->
+                         <#--width="230" height="230">-->
+                <#--</a>-->
+            <#--</div>-->
+            <div>
                 <ul>
-                    <#--<if (catagoryBean.foodInfos)??>-->
-                        <#--<#list hotfoods as food>-->
-                            <#--<li>-->
-                                <#--<a href="fooddetail?fid=${food.fid}" target="_blank">-->
-                                    <#--<img src="http://img07.yiguoimg.com/d/others/180313/9288720241009773.jpg"-->
-                                         <#--width="230" height="230">-->
-                                <#--</a>-->
-                            <#--</li>-->
-                        <#--</#list>-->
-                    <#--</if>-->
+                    <if (catagoryBean.foodInfos)??>
+                        <#list hotfoods as food>
+                            <li>
+                                <a href="fooddetail?fid=${food.fid}">
+                                    <img src="${(food.fimage)!""}"
+                                         width="230" height="230">
+                                </a>
+                            </li>
+                        </#list>
+                    </if>
                 </ul>
             </div>
         </div>

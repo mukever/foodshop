@@ -6,6 +6,7 @@
     <groupId>com.ranchel</groupId>
     <artifactId>foodshop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <packaging>web</packaging>
     <!--测试测试-->
     <name>foodshop</name>
@@ -69,6 +70,15 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
+        <!-- 添加thymeleaf -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+
+        <!--支付宝 -->
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

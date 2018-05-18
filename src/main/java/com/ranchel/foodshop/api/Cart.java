@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-public class AddToCart {
+public class Cart {
 
     @Autowired
     private FoodService foodService;
@@ -102,6 +102,29 @@ public class AddToCart {
         return apiMessage;
 
     }
+    @RequestMapping("/pay")
+    @ResponseBody
+    public ApiMessage Pay(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+
+        //跨域设置
+        Common.common(response);
+        ApiMessage apiMessage = new ApiMessage();
+        String oid = request.getParameter("oid");
+
+        if(session.getAttribute("username")==null){
+            apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
+            apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
+        }else {
+            OrderDto orderDto =  orderService.findOne(oid);
+            orderService.paid(orderDto);
+            apiMessage.setCode(ApiCodeEnum.PAYSUCCESS.getCode());
+            apiMessage.setMessage(ApiCodeEnum.PAYSUCCESS.getMessage());
+        }
+
+        return apiMessage;
+
+    }
+
 
     /**
      * 返回类别json 数据
