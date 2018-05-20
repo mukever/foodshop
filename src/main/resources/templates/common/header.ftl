@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <title>卖家后端管理系统</title>
+    <title >卖家后端管理系统</title>
     <link href="/foodshop/css/seller/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/foodshop/css/seller/style.css">
     <#--<link rel="stylesheet" href="/foodshop/css/seller/fileinput.css">-->

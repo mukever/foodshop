@@ -65,13 +65,6 @@
     </span>
         </div>
         <div class="floor-con floor-layout2">
-            <#--<div class="floor-side">-->
-                <#--<!--firstOne info&ndash;&gt;-->
-                <#--<a href="fooddetail?fid=${firstOne.fid}">-->
-                    <#--<img src="${(firstOne.fimage)!""}"-->
-                         <#--width="230" height="230">-->
-                <#--</a>-->
-            <#--</div>-->
             <div>
                 <ul>
                     <if (catagoryBean.foodInfos)??>

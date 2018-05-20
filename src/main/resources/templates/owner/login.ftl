@@ -6,7 +6,7 @@
     <!-- Bootstrap -->
     <#include "../common/header.ftl">
     <!-- styles -->
-    <link href="/foodshop/css/login.css" rel="stylesheet">
+    <link href="/foodshop/css/seller/login.css" rel="stylesheet">
 
 </head>
 <body class="login-bg">

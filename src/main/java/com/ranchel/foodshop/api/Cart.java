@@ -53,7 +53,7 @@ public class Cart {
     public ApiMessage AddToCart(HttpServletRequest request,HttpSession session, HttpServletResponse response) {
 
         //跨域设置
-        Common.common(response);
+       // Common.common(response);
         ApiMessage apiMessage = new ApiMessage();
         String fid = request.getParameter("fid");
         int number = Integer.valueOf(request.getParameter("number"));

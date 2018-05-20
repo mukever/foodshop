@@ -5,7 +5,7 @@
     <meta http-equiv="/foodshop/css/buyer/login-Type" /foodshop/css/buyer/login="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" /foodshop/css/buyer/login="width=device-width, initial-scale=1.0">
-    <title>易果网</title>
+    <title>瑞秋易果</title>
     <link rel="shortcut icon" href="/foodshop/images/buyer/img/yiguo.ico" />
     <script src="/foodshop/js/buyer/jquery/2.1.1/jquery.min.js"></script>
 
@@ -29,7 +29,9 @@
     <div class="header clearfix">
         <div class="wrap">
             <div class="logo">
-                <a href="http://www.yiguo.com" target="_blank"></a>
+                <#--<a href="http://www.yiguo.com" target="_blank"></a>-->
+                    <#--<a href="index.ftl" target="_blank"></a>-->
+                    <imge="/foodshop/log.png"></imge>
                 <span class="h-tit">登录</span>
             </div>
         </div>

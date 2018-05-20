@@ -54,9 +54,13 @@
 
         <#--操作-->
             <div class="col-md-12 column">
-                <#if orderDto.getOrderStatusEnum().message == "新订单">
+                <#if orderDto.getOrderStatusEnum().message == "新订单" && orderDto.getOrderPayStatus().message == "支付成功">
                     <a href="/foodshop/seller/order/finish?oid=${orderDto.oid}" type="button" class="btn btn-default btn-primary">完结订单</a>
                     <a href="/foodshop/seller/order/cancel?oid=${orderDto.oid}" type="button" class="btn btn-default btn-danger">取消订单</a>
+                <#elseif orderDto.getOrderStatusEnum().message == "新订单" && orderDto.getOrderPayStatus().message == "等待支付">
+                      <button type="button" class="btn btn-large" disabled>完结订单</button>
+                      <a href="/foodshop/seller/order/cancel?oid=${orderDto.oid}" type="button" class="btn btn-default btn-danger">取消订单</a>
+
                 </#if>
             </div>
              </div>

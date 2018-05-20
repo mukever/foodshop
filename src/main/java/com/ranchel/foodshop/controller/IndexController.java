@@ -18,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**/
@@ -41,12 +44,15 @@ public class IndexController {
         List<FoodCategory> foodCategoryList = categoryService.findAll();
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
         for (FoodCategory f:foodCategoryList) {
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
 
@@ -72,25 +78,29 @@ public class IndexController {
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
         for (FoodCategory f:foodCategoryList) {
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
+
         }
 
         System.out.println(catagoryBeanList.size());
         map.put("catagoryBeanList",catagoryBeanList);
 
-
         List<FoodInfo> foodInfoList = foodService.findByCtypeIn(ctype);
-
+        List<FoodInfo> foodInfos=foodInfoList.stream()
+                .filter(e->e.getFstatus()==0)
+                .collect(toList());
         System.out.println(foodInfoList.size());
-
-        map.put("foodInfos",foodInfoList);
+        map.put("foodInfos",foodInfos);
         map.put("allcatagory",foodCategoryList);
         return new ModelAndView("buyer/list",map);
     }

@@ -20,7 +20,7 @@
                             <th>图片</th>
                             <th>单价</th>
                             <th>描述</th>
-                            <th>类目</th>
+                            <th>类目编号</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
                             <th colspan="2">操作</th>

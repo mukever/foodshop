@@ -10,8 +10,10 @@ public interface FoodService {
     FoodInfo findOne(String fid);
     //查询所有在架商品
     List<FoodInfo> findUpAll();
+
     Page<FoodInfo> findAll(Pageable pageable);
     List<FoodInfo> findByCtypeIn(Integer ctype);
+
     FoodInfo save(FoodInfo fi);
     //List<FoodInfo> findWhole();
 //    //加库存

@@ -37,13 +37,13 @@ public class SellerFoodController {
     @Autowired
     private CategoryService categoryService;
 
-    public static final String ROOT = "/Users/diamond/IdeaProjects/foodshop/src/main/resources/static/images/foods/";
+    public static final String ROOT = "C:\\Users\\ranch\\Desktop\\note\\foodshop\\src\\main\\resources\\static\\images\\foods\\";
     public static final String IMAGEROOT = "/foodshop/images/foods/";
 
     @GetMapping("/list")
     //列表，参数：page,size,map
     public ModelAndView list(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                             @RequestParam(value = "size",defaultValue ="10") Integer size,
+                             @RequestParam(value = "size",defaultValue ="5") Integer size,
                              Map<String,Object> map){
 
         PageRequest request=new PageRequest(page-1,size);

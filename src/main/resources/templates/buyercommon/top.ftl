@@ -2,7 +2,7 @@
         <div class="site-nav">
         <div class="wrap">
             <ul class="fl">
-                <li><a href="/foodshop/buyer/index">欢迎光临易果生鲜！</a></li>
+                <li><a href="/foodshop/buyer/index">欢迎光临瑞秋易果生鲜！</a></li>
 
             </ul>
         <ul class="fr">
