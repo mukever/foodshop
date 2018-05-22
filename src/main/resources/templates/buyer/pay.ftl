@@ -89,7 +89,7 @@
                console.log(data['code']);
                console.log("支付成功");
                if(data['code']=='901'){
-                   self.location = "myorder";
+                   self.location = "myorderlist";
                }else {
 
                    self.location = "login";

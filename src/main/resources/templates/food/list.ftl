@@ -12,10 +12,10 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed" >
                         <thead>
-                        <tr>
-                            <th>商品id</th>
+                        <tr  bgColor=#E6E6FA>
+                            <th >商品id</th>
                             <th>名称</th>
                             <th>图片</th>
                             <th>单价</th>

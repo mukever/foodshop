@@ -48,7 +48,7 @@
     <div class="site-nav">
         <div class="wrap">
             <ul class="fl">
-                <li>欢迎光临易果生鲜！</li>
+                <li>欢迎光临瑞秋易果生鲜！</li>
                 <!--送货城市 开始-->
 
                 <!--送货城市 结束-->
@@ -79,8 +79,7 @@
                             </div>
 
                         </li>
-                    <#else >
-
+                    <#else>
                         <li id="_register" ><a rel="nofollow" href="/foodshop/buyer/register">[注册]</a></li>
                         <li id="_login">
                             <a rel="nofollow" href="/foodshop/buyer/login">[登录]</a>
@@ -138,7 +137,7 @@
                         <dt>交易信息</dt>
                         <dd>
                             <ul>
-                                <li><a href="myorder">我的订单</a></li>
+                                <li><a href="myorderlist">我的订单</a></li>
                             </ul>
                         </dd>
                     </dl>
@@ -217,7 +216,6 @@
                                             支付完成
                                         </div>
                                     </#if>
-
                                 </td>
                             </tr>
 

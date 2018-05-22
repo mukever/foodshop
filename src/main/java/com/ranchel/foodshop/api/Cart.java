@@ -53,11 +53,14 @@ public class Cart {
     public ApiMessage AddToCart(HttpServletRequest request,HttpSession session, HttpServletResponse response) {
 
         //跨域设置
-       // Common.common(response);
+        Common.common(response);
         ApiMessage apiMessage = new ApiMessage();
         String fid = request.getParameter("fid");
+        FoodInfo foodInfo1 = foodService.findOne(fid);
+        System.out.println(fid);
+        System.out.println(foodInfo1.getFname());
         int number = Integer.valueOf(request.getParameter("number"));
-
+        System.out.println(fid);
         if(session.getAttribute("cart")==null){
             Map<FoodInfo,Integer> cartfoods = new HashMap<>();
             FoodInfo foodInfo = foodService.findOne(fid);
@@ -74,7 +77,10 @@ public class Cart {
             CartBean cartBean = (CartBean) session.getAttribute("cart");
             Map<FoodInfo,Integer> cartfoods = cartBean.getCartfoods();
             Set<FoodInfo> foodInfoSet = cartfoods.keySet();
+
             FoodInfo foodInfo= foodService.findOne(fid);
+
+
             if(foodInfoSet.contains(foodInfo)){
 
                 int new_number =  cartfoods.get(foodInfo) + number;
@@ -84,6 +90,7 @@ public class Cart {
                 cartfoods.put(foodInfo,number);
                 cartBean.setAll_number(cartBean.getAll_number()+1);
             }
+            System.out.println(foodInfo.getFprice());
             cartBean.setCartfoods(cartfoods);
             cartBean.setTotalprice(cartBean.getTotalprice()+foodInfo.getFprice().doubleValue()*number);
 

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>结算-易果网</title>
+    <title>结算-瑞秋易果生鲜</title>
 
     <link rel="shortcut icon" href="http://static01.yiguo.com/cart/images/yiguo.ico" />
     <link href="http://static01.yiguo.com/cart/css/public.css" rel="stylesheet" type="text/css" />
@@ -22,7 +22,7 @@
     <div class="site-nav">
         <div class="wrap">
             <ul class="fl">
-                <li>欢迎光临易果生鲜！</li>
+                <li>欢迎光临瑞秋易果生鲜！</li>
             </ul>
 
             <ul class="fr">

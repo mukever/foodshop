@@ -114,14 +114,18 @@ public class IndexController {
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
         for (FoodCategory f:foodCategoryList) {
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
+
         }
 
         System.out.println(catagoryBeanList.size());
@@ -218,7 +222,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/myorder")
+    @RequestMapping("/myorderlist")
     public ModelAndView BuyerMyorder(HttpSession session,
                                      @RequestParam(value = "page",defaultValue = "1") Integer page,
                                      @RequestParam(value = "size",defaultValue ="10") Integer size,

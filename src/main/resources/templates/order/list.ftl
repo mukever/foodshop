@@ -12,7 +12,7 @@
                    <div class="col-md-12 column">
                        <table class="table table-bordered table-hover table-condensed">
                            <thead>
-                           <tr>
+                           <tr  bgColor=#E6E6FA>
                                <th>订单id</th>
                                <th>姓名</th>
                                <th>手机号</th>

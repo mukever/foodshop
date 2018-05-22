@@ -56,7 +56,7 @@
                                         <button class="increase">+</button>
                                     </div>
                                     <div class="addcart"><a class="btn-gn"  id="addToCarD"><i></i>加入购物车</a></div>
-                                    <input type="hidden" hadden id="fid" maxlength="2",value="${foodInfo.fid}" >
+                                    <input type="hidde" hidden id="fid" value="${foodInfo.fid}" >
 
                                 </div>
                             </div>
@@ -125,10 +125,9 @@
     //添加购物车
     $("#addToCarD").click(function () {
 
-
-        console.log("casc");
         var number = parseInt($("#p_number").val());
-        var fid = parseInt($("#fid").val());
+        var fid =$("#fid").val()
+        console.log(fid);
         $.ajax({
             url:"/foodshop/api/addtocart",
             method:"post",
@@ -136,13 +135,13 @@
             success:function(data){
                console.log(data);
                if(data['code']==601){
-                   self.location='login';
+                  // self.location='login';
                }else {
                    self.location.reload()
                }
             },
             error:function () {
-                self.location='login';
+                //self.location='login';
             }
         })
     });
