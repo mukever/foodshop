@@ -2,6 +2,7 @@ package com.ranchel.foodshop.controller;
 
 import com.ranchel.foodshop.bean.CartBean;
 import com.ranchel.foodshop.bean.CatagoryBean;
+import com.ranchel.foodshop.dao.OrderDetailDao;
 import com.ranchel.foodshop.dateobject.FoodCategory;
 import com.ranchel.foodshop.dateobject.FoodInfo;
 import com.ranchel.foodshop.dto.OrderDto;
@@ -35,6 +36,9 @@ public class IndexController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OrderDetailDao orderDetailDao;
 
     @RequestMapping("/index")
     public ModelAndView BuyerIndex(HttpSession session,
@@ -224,7 +228,7 @@ public class IndexController {
 
     @RequestMapping("/myorderlist")
     public ModelAndView BuyerMyorder(HttpSession session,
-                                     @RequestParam(value = "page",defaultValue = "1") Integer page,
+                                     @RequestParam(value = "page",defaultValue = "0") Integer page,
                                      @RequestParam(value = "size",defaultValue ="10") Integer size,
                                      Map<String, Object>  map) {
         if(session.getAttribute("username")==null){
@@ -235,22 +239,31 @@ public class IndexController {
             List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
             for (FoodCategory f:foodCategoryList) {
-
-                List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-                if(foodInfos.size()==0) continue;
+                List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+                if(ff.size()==0 ) continue;
+                List<FoodInfo> foodInfos=ff.stream()
+                        .filter(e->e.getFstatus()==0)
+                        .collect(toList());
+                if(foodInfos.size()==0 ) continue;
                 CatagoryBean catagoryBean = new CatagoryBean();
-                catagoryBean.setCname(f.getCname());
                 catagoryBean.setCtype(f.getCtype());
+                catagoryBean.setCname(f.getCname());
                 catagoryBean.setFoodInfos(foodInfos);
                 catagoryBeanList.add(catagoryBean);
+
             }
 
             System.out.println(catagoryBeanList.size());
             map.put("catagoryBeanList",catagoryBeanList);
 
             map.put("allcatagory",foodCategoryList);
-            PageRequest request=new PageRequest(page-1,size);
+            PageRequest request=new PageRequest(page,size);
             Page<OrderDto> orderDtoPage=orderService.findList(username,request);
+
+            for(OrderDto order:orderDtoPage){
+                order.setOrderDetailsList(orderDetailDao.findByOid(order.getOid()));
+            }
+
             map.put("orderDtoPage",orderDtoPage);
             map.put("currentPage",page);
             map.put("size",size);

@@ -64,6 +64,7 @@ public class BuyerOrderController {
         }
         PageRequest request=new PageRequest(page,size);
        Page<OrderDto> orderDtoPage=orderService.findList(bnickname,request);
+        System.out.println(orderDtoPage);
        return ResultVoUtils.success(orderDtoPage.getContent());
     }
     //订单详情

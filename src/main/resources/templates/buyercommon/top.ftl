@@ -26,7 +26,7 @@
                             </div>
                             <div class="con">
                             <#--<li id="_loginname" ><a rel="nofollow" href="#">${username}</a></li>-->
-                                <a rel="nofollow" href="myorder">我的订单</a>
+                                <a rel="nofollow" href="myorderlist">我的订单</a>
                                 <a rel="nofollow" href="userlogout" class="logout">退出</a>
                             </div>
 
