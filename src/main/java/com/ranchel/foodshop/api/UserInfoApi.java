@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +85,7 @@ public class UserInfoApi {
 
     @RequestMapping("/login")
     @ResponseBody
+
     public ApiMessage BuyerLogin(HttpServletRequest request, HttpServletResponse response) {
 
         //跨域设置
@@ -93,20 +95,21 @@ public class UserInfoApi {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             System.out.println(username+"/ "+password);
+            if(username!=null){
+                Buyer_Info buyer_info = buyerInfoDao.findByUsernameAndPassword(username,password);
+                    if(buyer_info !=null) {
 
-            Buyer_Info buyer_info = buyerInfoDao.findByUsernameAndPassword(username,password);
-            if(buyer_info !=null){
+                        //登录成功
+                        apiMessage.setCode(ApiCodeEnum.USERLOGINSUCCESS.getCode());
+                        apiMessage.setMessage(ApiCodeEnum.USERLOGINSUCCESS.getMessage());
 
-                //登录成功
-                apiMessage.setCode(ApiCodeEnum.USERLOGINSUCCESS.getCode());
-                apiMessage.setMessage(ApiCodeEnum.USERLOGINSUCCESS.getMessage());
+                        //设置session
+                        HttpSession session = request.getSession();
+                        session.setAttribute("username", username);
 
-                //设置session
-                HttpSession session = request.getSession();
-                session.setAttribute("username",username);
+                    }
 
-
-            }else {
+                }else {
                 apiMessage.setCode(ApiCodeEnum.USERLOGINFAIL.getCode());
                 apiMessage.setMessage(ApiCodeEnum.USERLOGINFAIL.getMessage());
             }

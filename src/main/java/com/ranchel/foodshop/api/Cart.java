@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,64 +45,62 @@ public class Cart {
     private OrderService orderService;
     /**
      * 返回类别json 数据
-     * @param session
+     * @param
      * @param response
      * @return
      */
     @RequestMapping("/addtocart")
     @ResponseBody
-    public ApiMessage AddToCart(HttpServletRequest request,HttpSession session, HttpServletResponse response) {
+    public ApiMessage AddToCart(HttpServletRequest request, HttpServletResponse response) {
+
 
         //跨域设置
         Common.common(response);
         ApiMessage apiMessage = new ApiMessage();
         String fid = request.getParameter("fid");
-        FoodInfo foodInfo1 = foodService.findOne(fid);
-        System.out.println(fid);
-        System.out.println(foodInfo1.getFname());
         int number = Integer.valueOf(request.getParameter("number"));
-        System.out.println(fid);
-        if(session.getAttribute("cart")==null){
-            Map<FoodInfo,Integer> cartfoods = new HashMap<>();
-            FoodInfo foodInfo = foodService.findOne(fid);
-            cartfoods.put(foodInfo,number);
-
-            CartBean cartBean = new CartBean();
-            cartBean.setAll_number(1);
-            cartBean.setCartfoods(cartfoods);
-            cartBean.setTotalprice(foodInfo.getFprice().doubleValue()*number);
-
-            session.setAttribute("cart",cartBean);
-
-        }else {
-            CartBean cartBean = (CartBean) session.getAttribute("cart");
-            Map<FoodInfo,Integer> cartfoods = cartBean.getCartfoods();
-            Set<FoodInfo> foodInfoSet = cartfoods.keySet();
-
-            FoodInfo foodInfo= foodService.findOne(fid);
-
-
-            if(foodInfoSet.contains(foodInfo)){
-
-                int new_number =  cartfoods.get(foodInfo) + number;
-
-                cartfoods.put(foodInfo,new_number);
-            }else {
-                cartfoods.put(foodInfo,number);
-                cartBean.setAll_number(cartBean.getAll_number()+1);
-            }
-            System.out.println(foodInfo.getFprice());
-            cartBean.setCartfoods(cartfoods);
-            cartBean.setTotalprice(cartBean.getTotalprice()+foodInfo.getFprice().doubleValue()*number);
-
-            session.setAttribute("cart",cartBean);
-            System.out.println(cartBean);
-        }
-
+        HttpSession session = request.getSession();
+        session.setAttribute("username","13889325649");
+        System.out.println(session.getAttribute("username"));
         if(session.getAttribute("username")==null){
             apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
             apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
         }else {
+
+            if(session.getAttribute("cart")==null){
+                Map<FoodInfo,Integer> cartfoods = new HashMap<>();
+                FoodInfo foodInfo = foodService.findOne(fid);
+                cartfoods.put(foodInfo,number);
+
+                CartBean cartBean = new CartBean();
+                cartBean.setAll_number(1);
+                cartBean.setCartfoods(cartfoods);
+                cartBean.setTotalprice(foodInfo.getFprice().doubleValue()*number);
+
+                session.setAttribute("cart",cartBean);
+
+            }else {
+                CartBean cartBean = (CartBean) session.getAttribute("cart");
+                Map<FoodInfo,Integer> cartfoods = cartBean.getCartfoods();
+                Set<FoodInfo> foodInfoSet = cartfoods.keySet();
+                FoodInfo foodInfo= foodService.findOne(fid);
+                if(foodInfoSet.contains(foodInfo)){
+
+                    int new_number =  cartfoods.get(foodInfo) + number;
+
+                    cartfoods.put(foodInfo,new_number);
+                }else {
+                    cartfoods.put(foodInfo,number);
+                    cartBean.setAll_number(cartBean.getAll_number()+1);
+                }
+                cartBean.setCartfoods(cartfoods);
+                cartBean.setTotalprice(cartBean.getTotalprice()+foodInfo.getFprice().doubleValue()*number);
+
+                session.setAttribute("cart",cartBean);
+                System.out.println(cartBean);
+            }
+
+
             apiMessage.setCode(ApiCodeEnum.ADDTOCARTSUCCESS.getCode());
             apiMessage.setMessage(ApiCodeEnum.ADDTOCARTSUCCESS.getMessage());
         }
@@ -109,29 +108,6 @@ public class Cart {
         return apiMessage;
 
     }
-    @RequestMapping("/pay")
-    @ResponseBody
-    public ApiMessage Pay(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
-
-        //跨域设置
-        Common.common(response);
-        ApiMessage apiMessage = new ApiMessage();
-        String oid = request.getParameter("oid");
-
-        if(session.getAttribute("username")==null){
-            apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
-            apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
-        }else {
-            OrderDto orderDto =  orderService.findOne(oid);
-            orderService.paid(orderDto);
-            apiMessage.setCode(ApiCodeEnum.PAYSUCCESS.getCode());
-            apiMessage.setMessage(ApiCodeEnum.PAYSUCCESS.getMessage());
-        }
-
-        return apiMessage;
-
-    }
-
 
     /**
      * 返回类别json 数据
@@ -153,7 +129,7 @@ public class Cart {
         Common.common(response);
         ApiMessage apiMessage = new ApiCountMessage();
 
-
+        session.setAttribute("username","13889325649");
         if(session.getAttribute("username")==null){
             apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
             apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
@@ -168,6 +144,7 @@ public class Cart {
             //数据库操作
             //获取session数据
             CartBean cartBean = (CartBean) session.getAttribute("cart");
+            System.out.println(cartBean);
             double totalprice = cartBean.getTotalprice();
 
             Map<FoodInfo,Integer> foodInfomap =  cartBean.getCartfoods();
