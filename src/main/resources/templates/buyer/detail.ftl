@@ -56,7 +56,7 @@
                                         <button class="increase">+</button>
                                     </div>
                                     <div class="addcart"><a class="btn-gn"  id="addToCarD"><i></i>加入购物车</a></div>
-                                    <input type="hidden" hadden id="fid" maxlength="2",value="${foodInfo.fid}" >
+                                    <input type="input" hidden id="fid" name="fid" value="${foodInfo.fid}" >
 
                                 </div>
                             </div>
@@ -125,14 +125,13 @@
     //添加购物车
     $("#addToCarD").click(function () {
 
-
-        console.log("casc");
         var number = parseInt($("#p_number").val());
-        var fid = parseInt($("#fid").val());
+        var fid_ = GetQueryString('fid');
+        console.log(fid_);
         $.ajax({
             url:"/foodshop/api/addtocart",
             method:"post",
-            data:{"fid":fid,"number":number},
+            data:{'fid':fid_,'number':number},
             success:function(data){
                console.log(data);
                if(data['code']==601){
@@ -158,6 +157,12 @@
             $("#p_number").val(valnum);
         }
     });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
 </script>
 </body>
 </html>

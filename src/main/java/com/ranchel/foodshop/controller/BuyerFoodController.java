@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
     @GetMapping("/list")
     public ResultVo list(HttpServletRequest request,HttpServletResponse response){
         Common.common(response);
-        //1.查询所有商品
+        //1.查询所有在架商品
       List<FoodInfo>foodInfosList= foodService.findUpAll();
       //2.查询类目（一次性查询）
     //精简方法

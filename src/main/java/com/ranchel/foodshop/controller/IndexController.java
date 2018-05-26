@@ -2,6 +2,7 @@ package com.ranchel.foodshop.controller;
 
 import com.ranchel.foodshop.bean.CartBean;
 import com.ranchel.foodshop.bean.CatagoryBean;
+import com.ranchel.foodshop.dao.OrderDetailDao;
 import com.ranchel.foodshop.dateobject.FoodCategory;
 import com.ranchel.foodshop.dateobject.FoodInfo;
 import com.ranchel.foodshop.dto.OrderDto;
@@ -14,10 +15,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**/
@@ -33,20 +40,24 @@ public class IndexController {
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("/index")
-    public ModelAndView BuyerIndex(HttpSession session,
-                                    Map<String, Object>  map) {
+    @Autowired
+    private OrderDetailDao orderDetailDao;
 
-        session.setAttribute("username","13889325649");
+    @RequestMapping("/index")
+    public ModelAndView BuyerIndex(Map<String, Object>  map) {
+
         List<FoodCategory> foodCategoryList = categoryService.findAll();
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
         for (FoodCategory f:foodCategoryList) {
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
 
@@ -72,25 +83,29 @@ public class IndexController {
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
         for (FoodCategory f:foodCategoryList) {
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
+
         }
 
         System.out.println(catagoryBeanList.size());
         map.put("catagoryBeanList",catagoryBeanList);
 
-
         List<FoodInfo> foodInfoList = foodService.findByCtypeIn(ctype);
-
+        List<FoodInfo> foodInfos=foodInfoList.stream()
+                .filter(e->e.getFstatus()==0)
+                .collect(toList());
         System.out.println(foodInfoList.size());
-
-        map.put("foodInfos",foodInfoList);
+        map.put("foodInfos",foodInfos);
         map.put("allcatagory",foodCategoryList);
         return new ModelAndView("buyer/list",map);
     }
@@ -104,14 +119,18 @@ public class IndexController {
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
         for (FoodCategory f:foodCategoryList) {
-
-            List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-            if(foodInfos.size()==0) continue;
+            List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+            if(ff.size()==0 ) continue;
+            List<FoodInfo> foodInfos=ff.stream()
+                    .filter(e->e.getFstatus()==0)
+                    .collect(toList());
+            if(foodInfos.size()==0 ) continue;
             CatagoryBean catagoryBean = new CatagoryBean();
-            catagoryBean.setCname(f.getCname());
             catagoryBean.setCtype(f.getCtype());
+            catagoryBean.setCname(f.getCname());
             catagoryBean.setFoodInfos(foodInfos);
             catagoryBeanList.add(catagoryBean);
+
         }
 
         System.out.println(catagoryBeanList.size());
@@ -133,7 +152,7 @@ public class IndexController {
     @RequestMapping("/mycart")
     public ModelAndView BuyerMycart(HttpSession session, Map<String, Object>  map) {
 
-        session.setAttribute("username","13889325649");
+
 
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
@@ -167,7 +186,7 @@ public class IndexController {
     public ModelAndView BuyerMycartDelete(
             @RequestParam(value = "fid",required=false) String fid,
             HttpSession session, Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
@@ -208,12 +227,12 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/myorder")
+    @RequestMapping("/myorderlist")
     public ModelAndView BuyerMyorder(HttpSession session,
-                                     @RequestParam(value = "page",defaultValue = "1") Integer page,
+                                     @RequestParam(value = "page",defaultValue = "0") Integer page,
                                      @RequestParam(value = "size",defaultValue ="10") Integer size,
                                      Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
@@ -222,22 +241,31 @@ public class IndexController {
             List<CatagoryBean> catagoryBeanList = new ArrayList<>();
 
             for (FoodCategory f:foodCategoryList) {
-
-                List<FoodInfo> foodInfos = foodService.findByCtypeIn(f.getCtype());
-                if(foodInfos.size()==0) continue;
+                List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+                if(ff.size()==0 ) continue;
+                List<FoodInfo> foodInfos=ff.stream()
+                        .filter(e->e.getFstatus()==0)
+                        .collect(toList());
+                if(foodInfos.size()==0 ) continue;
                 CatagoryBean catagoryBean = new CatagoryBean();
-                catagoryBean.setCname(f.getCname());
                 catagoryBean.setCtype(f.getCtype());
+                catagoryBean.setCname(f.getCname());
                 catagoryBean.setFoodInfos(foodInfos);
                 catagoryBeanList.add(catagoryBean);
+
             }
 
             System.out.println(catagoryBeanList.size());
             map.put("catagoryBeanList",catagoryBeanList);
 
             map.put("allcatagory",foodCategoryList);
-            PageRequest request=new PageRequest(page-1,size);
+            PageRequest request=new PageRequest(page,size);
             Page<OrderDto> orderDtoPage=orderService.findList(username,request);
+
+            for(OrderDto order:orderDtoPage){
+                order.setOrderDetailsList(orderDetailDao.findByOid(order.getOid()));
+            }
+
             map.put("orderDtoPage",orderDtoPage);
             map.put("currentPage",page);
             map.put("size",size);
@@ -250,7 +278,7 @@ public class IndexController {
 
     @RequestMapping("/order")
     public ModelAndView BuyerOrder( HttpSession session,Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
@@ -287,17 +315,13 @@ public class IndexController {
 
         return new ModelAndView("buyer/pay",map);
     }
+    @RequestMapping("/return")
+    public String paysuccessOrnot(
+            HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("return---------------");
 
-    @RequestMapping("/alipay")
-    public ModelAndView BuyerAliPay(@RequestParam(value = "oid",required=false) String oid,
-                                 Map<String, Object>  map) {
-
-        OrderDto orderDto = orderService.findOne(oid);
-        map.put("orderDto",orderDto);
-
-        return new ModelAndView("buyer/pay",map);
+        return "redirect:/buyer/myorderlist";
     }
-
 
 
     @RequestMapping("/userlogout")

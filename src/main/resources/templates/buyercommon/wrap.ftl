@@ -14,8 +14,7 @@
                                     <div class="sub-list">
                                         <if (catagoryBean.foodInfos)??>
                                                 <#list catagoryBean.foodInfos as food>
-                                                    <a href="/foodshop/buyer/fooddetail?fid=${food.fid}" target="_blank">${food.fname}</a>
-
+                                                      <a href="/foodshop/buyer/fooddetail?fid=${food.fid}" target="_blank">${food.fname}</a>
                                                 </#list>
                                         </if>
 

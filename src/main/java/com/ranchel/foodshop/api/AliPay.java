@@ -8,6 +8,8 @@ import com.alipay.api.request.AlipayTradeCloseRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.ranchel.foodshop.dateobject.ApiMessage;
 import com.ranchel.foodshop.dto.OrderDto;
+import com.ranchel.foodshop.enums.ApiCodeEnum;
+import com.ranchel.foodshop.enums.OrderPayStatusEnum;
 import com.ranchel.foodshop.service.CategoryService;
 import com.ranchel.foodshop.service.FoodService;
 import com.ranchel.foodshop.service.OrderService;
@@ -22,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
-
 @RestController
 @RequestMapping("/api")
 public class AliPay {
@@ -39,39 +40,29 @@ public class AliPay {
     @ResponseBody
     public ApiMessage pay2aliweb(HttpServletRequest request, HttpServletResponse response) {
 
-        System.out.println("notify-------------");
-        Enumeration enu=request.getParameterNames();
-        while(enu.hasMoreElements()){
-            String paraName=(String)enu.nextElement();
-            System.out.println(paraName+": "+request.getParameter(paraName));
-        }
+        /*
 
+        notify-------------
+
+            out_trade_no: 1527342140584319626
+            trade_status: TRADE_SUCCESS
+            trade_no: 201805262100100474020060243
+         */
+        System.out.println("notify-------------");
+        String out_trade_no =  request.getParameter("out_trade_no");
+        String trade_status = request.getParameter("trade_status");
+        String trade_no = request.getParameter("trade_no");
+
+        OrderDto orderDto = orderService.findOne(out_trade_no);
+        orderDto.setTrade_no(trade_no);
+        if ("TRADE_SUCCESS".equals(trade_status)) {
+            orderService.paid(orderDto);
+        }else {
+
+        }
         return new ApiMessage();
     }
 
-    @RequestMapping("/return")
-    public String paysuccessOrnot(
-            @RequestParam(value ="total_amount",required = false) String total_amount,
-            @RequestParam(value ="timestamp",required = false)String timestamp,
-            @RequestParam(value ="trade_no",required = false)String trade_no,
-            @RequestParam(value ="seller_id",required = false)String seller_id,
-            @RequestParam(value ="out_trade_no",required = false)String out_trade_no,
-
-            HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("return---------------");
-
-        Enumeration enu=request.getParameterNames();
-        while(enu.hasMoreElements()){
-            String paraName=(String)enu.nextElement();
-            System.out.println(paraName+": "+request.getParameter(paraName));
-        }
-
-
-        //数据库操作
-
-
-        return "redirect:/buyer/myorder";
-    }
 
     @RequestMapping("/closepay")
     @ResponseBody

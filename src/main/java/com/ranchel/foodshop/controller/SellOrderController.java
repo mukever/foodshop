@@ -84,6 +84,7 @@ public class SellOrderController {
                                Map<String,Object> map) {
         try {
             OrderDto orderDto=orderService.findOne(oid);
+
             orderService.finish(orderDto);
         }catch (ShopException e){
             log.error("[卖家端完结订单] 发生异常{}",e);

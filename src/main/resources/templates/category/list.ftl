@@ -14,7 +14,7 @@
                 <div class="col-md-12 column">
                     <table class="table table-bordered table-condensed">
                         <thead>
-                        <tr>
+                        <tr bgColor=#E6E6FA>
                             <th>类目id</th>
                             <th>名字</th>
                             <th>类型编号</th>

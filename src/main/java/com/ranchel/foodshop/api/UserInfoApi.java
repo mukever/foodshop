@@ -86,7 +86,9 @@ public class UserInfoApi {
     @RequestMapping("/login")
     @ResponseBody
 
-    public ApiMessage BuyerLogin(HttpServletRequest request, HttpServletResponse response) {
+    public ApiMessage BuyerLogin(
+            HttpSession session,
+            HttpServletRequest request, HttpServletResponse response) {
 
         //跨域设置
         Common.common(response);
@@ -103,8 +105,8 @@ public class UserInfoApi {
                         apiMessage.setCode(ApiCodeEnum.USERLOGINSUCCESS.getCode());
                         apiMessage.setMessage(ApiCodeEnum.USERLOGINSUCCESS.getMessage());
 
-                        //设置session
-                        HttpSession session = request.getSession();
+//                        //设置session
+//                        HttpSession session = request.getSession();
                         session.setAttribute("username", username);
 
                     }
