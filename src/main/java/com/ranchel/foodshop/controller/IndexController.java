@@ -44,7 +44,7 @@ public class IndexController {
     public ModelAndView BuyerIndex(HttpSession session,
                                     Map<String, Object>  map) {
 
-        session.setAttribute("username","13889325649");
+
         List<FoodCategory> foodCategoryList = categoryService.findAll();
         List<CatagoryBean> catagoryBeanList = new ArrayList<>();
         for (FoodCategory f:foodCategoryList) {
@@ -151,7 +151,7 @@ public class IndexController {
     @RequestMapping("/mycart")
     public ModelAndView BuyerMycart(HttpSession session, Map<String, Object>  map) {
 
-        session.setAttribute("username","13889325649");
+
 
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
@@ -185,7 +185,7 @@ public class IndexController {
     public ModelAndView BuyerMycartDelete(
             @RequestParam(value = "fid",required=false) String fid,
             HttpSession session, Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
@@ -231,7 +231,7 @@ public class IndexController {
                                      @RequestParam(value = "page",defaultValue = "0") Integer page,
                                      @RequestParam(value = "size",defaultValue ="10") Integer size,
                                      Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
@@ -277,7 +277,7 @@ public class IndexController {
 
     @RequestMapping("/order")
     public ModelAndView BuyerOrder( HttpSession session,Map<String, Object>  map) {
-        session.setAttribute("username","13889325649");
+
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {

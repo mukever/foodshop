@@ -60,7 +60,7 @@ public class Cart {
         String fid = request.getParameter("fid");
         int number = Integer.valueOf(request.getParameter("number"));
         HttpSession session = request.getSession();
-        session.setAttribute("username","13889325649");
+
         System.out.println(session.getAttribute("username"));
         if(session.getAttribute("username")==null){
             apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
@@ -129,7 +129,7 @@ public class Cart {
         Common.common(response);
         ApiMessage apiMessage = new ApiCountMessage();
 
-        session.setAttribute("username","13889325649");
+       
         if(session.getAttribute("username")==null){
             apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
             apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
