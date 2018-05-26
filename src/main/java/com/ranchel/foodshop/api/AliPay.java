@@ -56,8 +56,9 @@ public class AliPay {
         OrderDto orderDto = orderService.findOne(out_trade_no);
         orderDto.setTrade_no(trade_no);
         if ("TRADE_SUCCESS".equals(trade_status)) {
-            orderDto.setPstatus(OrderPayStatusEnum.SUCCESS.getCode());
             orderService.paid(orderDto);
+        }else {
+
         }
         return new ApiMessage();
     }

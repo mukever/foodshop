@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
+@SessionAttributes
 @RequestMapping("/api")
 public class Cart {
 
@@ -51,18 +54,22 @@ public class Cart {
      */
     @RequestMapping("/addtocart")
     @ResponseBody
-    public ApiMessage AddToCart(HttpServletRequest request, HttpServletResponse response) {
+    public ApiMessage AddToCart(
+            HttpSession session,
+            HttpServletRequest request, HttpServletResponse response) {
 
-
+        HttpServletRequest requests = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        //已经拿到session,就可以拿到session中保存的用户信息了。
+        System.out.println("别的方式拿到session"+requests.getSession().getAttribute("username"));
         //跨域设置
         Common.common(response);
         ApiMessage apiMessage = new ApiMessage();
         String fid = request.getParameter("fid");
         int number = Integer.valueOf(request.getParameter("number"));
-        HttpSession session = request.getSession();
 
-        System.out.println(session.getAttribute("username"));
-        if(session.getAttribute("username")==null){
+        String username = (String) session.getAttribute("username");
+        System.out.println("ADDTOCART get session" + username);
+        if(username==null){
             apiMessage.setCode(ApiCodeEnum.NOTLOGIN.getCode());
             apiMessage.setMessage(ApiCodeEnum.NOTLOGIN.getMessage());
         }else {

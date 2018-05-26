@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FoodshopApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(FoodshopApplication.class, args);
+
     }
 }
