@@ -26,7 +26,7 @@
     </div>
     <div class="wrap">
         <div class="content">
-            <form id="payform" action="#">
+
                 <div class="main PickUpCard ConfirmPay w1200">
                     <div class="c">
                         <dl>
@@ -36,8 +36,7 @@
                                     <li><span>订单编号：${orderDto.oid}</span><span>应付金额：<b class="price">￥ ${(orderDto.oamount)!"0.00"}</b></span></li>
                                     <li><span>送 货 至：${orderDto.bname}   ${orderDto.baddress}  </span></li>
                                 </ul>
-                                <#--<a class="btn-org j_paybtn">立即支付<span id="timing">4</span></a>-->
-                                <a class="btn-org j_paybtn" id="paybtn">立即支付</a>
+                                <a class="btn-org j_paybtn" id="PayBtn">立即支付</a>
                                 <span class="fs12 mt10">倒计时结束时自动打开支付页面，如果未跳转，请点击按钮。</span>
                             </dd>
                             <input type="hidden" name="OrderPaymentNum" class="j_payonlineNum" value="30" />
@@ -47,7 +46,7 @@
                         </dl>
                     </div>
                 </div>
-            </form>
+
         </div>
     </div>
 
@@ -67,41 +66,28 @@
 <script type="text/javascript">
 
 
-   $("#paybtn").click(function () {
+   $("#PayBtn").click(function () {
+       //用户主动点击
+        console.log("用户点击");
+       toRedirect();
+
+   })
+
+
+   function toRedirect() {
+       //开始支付
 
        console.log("点击支付");
-
 
        var oid = $("#SerialNumber").val()
 
        console.log(oid);
 
+       var hr = 'http://127.0.0.1:8080/foodshop/api/pay?oid='+oid;
 
-       //请求后台数据库 查询用户是否已经注册
-       $.ajax({
-           url:"http://localhost:8080/foodshop/api/pay",
-           type: 'POST',
-           async: false,
-           data: {"oid":oid},
-           timeout: 3000,
-           dataType: 'json',
-           success: function(data){
-               console.log(data['code']);
-               console.log("支付成功");
-               if(data['code']=='901'){
-                   self.location = "myorder";
-               }else {
+       window.location.href =hr;
 
-                   self.location = "login";
-               }
-           },
-           error:function () {
-               alert("错误")
-           }
-       })
-
-   })
-
+   }
 
 
 
