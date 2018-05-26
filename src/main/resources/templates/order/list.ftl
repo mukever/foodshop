@@ -20,6 +20,7 @@
                                <th>金额</th>
                                <th>用户昵称</th>
                                <th>订单状态</th>
+                               <th>支付宝订单号</th>
                                <th>支付状态</th>
                                <th>创建时间</th>
                                <th colspan="2">操作</th>
@@ -36,6 +37,7 @@
                  <td>${orderDto.bnickname}</td>
                  <td>${orderDto.oamount}</td>
                  <td>${orderDto.getOrderStatusEnum().message}</td>
+                 <td>${(orderDto.trade_no)!"用户未支付"}</td>
                  <td>${orderDto.getOrderPayStatus().message}</td>
                  <td>${orderDto.ocreatetime}</td>
                  <td> <a href="/foodshop/seller/order/detail?oid=${orderDto.oid}"> 详情</a></td>

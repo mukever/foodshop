@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -314,17 +316,13 @@ public class IndexController {
 
         return new ModelAndView("buyer/pay",map);
     }
+    @RequestMapping("/return")
+    public String paysuccessOrnot(
+            HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("return---------------");
 
-    @RequestMapping("/alipay")
-    public ModelAndView BuyerAliPay(@RequestParam(value = "oid",required=false) String oid,
-                                 Map<String, Object>  map) {
-
-        OrderDto orderDto = orderService.findOne(oid);
-        map.put("orderDto",orderDto);
-
-        return new ModelAndView("buyer/pay",map);
+        return "redirect:/buyer/myorderlist";
     }
-
 
 
     @RequestMapping("/userlogout")

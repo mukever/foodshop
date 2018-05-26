@@ -35,6 +35,8 @@ public class OrderDto {
     private Date ocreatetime;
     /**更新时间*/
     private Date oupdatetime;
+    /**支付宝交易号*/
+    private String trade_no;
     @Transient
     List<OrderDetail> orderDetailsList;
 

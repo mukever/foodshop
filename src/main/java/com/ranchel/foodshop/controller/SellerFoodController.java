@@ -37,7 +37,7 @@ public class SellerFoodController {
     @Autowired
     private CategoryService categoryService;
 
-    public static final String ROOT = "C:\\Users\\ranch\\Desktop\\note\\foodshop\\src\\main\\resources\\static\\images\\foods\\";
+    public static final String ROOT = "C:\\Users\\ranch\\Desktop\\alipay-version\\foodshop\\src\\main\\resources\\static\\images\\foods\\";
     public static final String IMAGEROOT = "/foodshop/images/foods/";
 
     @GetMapping("/list")
