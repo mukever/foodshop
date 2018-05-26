@@ -71,7 +71,7 @@ public class Cart {
                 Map<FoodInfo,Integer> cartfoods = new HashMap<>();
                 FoodInfo foodInfo = foodService.findOne(fid);
                 cartfoods.put(foodInfo,number);
-
+                System.out.println(foodInfo);
                 CartBean cartBean = new CartBean();
                 cartBean.setAll_number(1);
                 cartBean.setCartfoods(cartfoods);
