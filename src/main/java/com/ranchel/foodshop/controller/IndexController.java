@@ -232,10 +232,66 @@ public class IndexController {
                                      @RequestParam(value = "page",defaultValue = "0") Integer page,
                                      @RequestParam(value = "size",defaultValue ="10") Integer size,
                                      Map<String, Object>  map) {
-
+        session.setAttribute("username","13889325649");
         if(session.getAttribute("username")==null){
             return new ModelAndView("buyer/login");
         }else {
+            String username = (String) session.getAttribute("username");
+            List<FoodCategory> foodCategoryList = categoryService.findAll();
+            List<CatagoryBean> catagoryBeanList = new ArrayList<>();
+
+            for (FoodCategory f:foodCategoryList) {
+                List<FoodInfo> ff = foodService.findByCtypeIn(f.getCtype());
+                if(ff.size()==0 ) continue;
+                List<FoodInfo> foodInfos=ff.stream()
+                        .filter(e->e.getFstatus()==0)
+                        .collect(toList());
+                if(foodInfos.size()==0 ) continue;
+                CatagoryBean catagoryBean = new CatagoryBean();
+                catagoryBean.setCtype(f.getCtype());
+                catagoryBean.setCname(f.getCname());
+                catagoryBean.setFoodInfos(foodInfos);
+                catagoryBeanList.add(catagoryBean);
+
+            }
+
+            System.out.println(catagoryBeanList.size());
+            map.put("catagoryBeanList",catagoryBeanList);
+
+            map.put("allcatagory",foodCategoryList);
+            PageRequest request=new PageRequest(page,size);
+            Page<OrderDto> orderDtoPage=orderService.findList(username,request);
+
+            for(OrderDto order:orderDtoPage){
+                order.setOrderDetailsList(orderDetailDao.findByOid(order.getOid()));
+            }
+
+            map.put("orderDtoPage",orderDtoPage);
+            map.put("currentPage",page);
+            map.put("size",size);
+
+            return new ModelAndView("buyer/myorderlist",map);
+        }
+
+
+    }
+
+
+    @RequestMapping("/cancelorder")
+    public ModelAndView BuyerCancelorder(HttpSession session,
+                                     @RequestParam(value = "oid",required=true) String oid,
+                                     @RequestParam(value = "page",defaultValue = "0") Integer page,
+                                     @RequestParam(value = "size",defaultValue ="10") Integer size,
+                                     Map<String, Object>  map) {
+        session.setAttribute("username","13889325649");
+        if(session.getAttribute("username")==null){
+            return new ModelAndView("buyer/login");
+        }else {
+
+            //处理订单
+            OrderDto orderDto = orderService.findOne(oid);
+            orderService.cancel(orderDto);
+
             String username = (String) session.getAttribute("username");
             List<FoodCategory> foodCategoryList = categoryService.findAll();
             List<CatagoryBean> catagoryBeanList = new ArrayList<>();
@@ -315,14 +371,6 @@ public class IndexController {
 
         return new ModelAndView("buyer/pay",map);
     }
-    @RequestMapping("/return")
-    public String paysuccessOrnot(
-            HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("return---------------");
-
-        return "redirect:/buyer/myorderlist";
-    }
-
 
     @RequestMapping("/userlogout")
     public ModelAndView BuyerLogout(HttpSession session, Map<String, Object>  map) {

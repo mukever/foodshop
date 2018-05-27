@@ -205,8 +205,9 @@
                                 </td>
                                 <td width="140" class="operate">
                                     <#if orderDto.getOrderPayStatus().code == 0 && orderDto.getOrderStatusEnum().code==0>
-                                        <div>
+                                        <div class="m">
                                             <a class="btn-org" href="pay?oid=${orderDto.oid}">立即支付</a>
+                                            <a class="btn-org" href="cancelorder?oid=${orderDto.oid}">取消订单</a>
                                         </div>
                                         <#elseif orderDto.getOrderStatusEnum().code==2>
                                                 <div>

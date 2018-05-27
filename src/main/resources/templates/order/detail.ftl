@@ -9,17 +9,19 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
              <div class="row clearfix">
-               <div class="col-md-4 column">
+               <div class="col-md-8 column">
                 <table class="table table-bordered table-condensed">
                     <thead>
                     <tr>
                         <th>订单id</th>
+                        <th>支付宝订单号</th>
                         <th>订单总金额</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>${orderDto.oid}</td>
+                        <td>${(orderDto.trade_no)!"暂时无"}</td>
                         <td>${orderDto.oamount}</td>
                     </tr>
                     </tbody>
