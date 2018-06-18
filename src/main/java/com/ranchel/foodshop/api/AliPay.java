@@ -53,6 +53,11 @@ public class AliPay {
         String trade_status = request.getParameter("trade_status");
         String trade_no = request.getParameter("trade_no");
 
+        System.out.println("out_trade_no"+out_trade_no);
+        System.out.println("trade_status"+trade_status);
+        System.out.println("trade_no"+trade_no);
+
+
         OrderDto orderDto = orderService.findOne(out_trade_no);
         orderDto.setTrade_no(trade_no);
         if ("TRADE_SUCCESS".equals(trade_status)) {
@@ -129,9 +134,9 @@ public class AliPay {
             //付款金额，必填
             String total_amount = order.getOamount().toString();
             //订单名称，必填
-            String subject = order.getBphone();
+            String subject = "在线生鲜"+order.getOid();
             //商品描述，可空
-            String body = "";
+            String body = "共计￥"+order.getOamount()+" 元";
 
             alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
                     + "\"total_amount\":\""+ total_amount +"\","

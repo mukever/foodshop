@@ -230,7 +230,7 @@ public class IndexController {
     @RequestMapping("/myorderlist")
     public ModelAndView BuyerMyorder(HttpSession session,
                                      @RequestParam(value = "page",defaultValue = "0") Integer page,
-                                     @RequestParam(value = "size",defaultValue ="10") Integer size,
+                                     @RequestParam(value = "size",defaultValue ="100") Integer size,
                                      Map<String, Object>  map) {
 
         if(session.getAttribute("username")==null){
